@@ -205,7 +205,20 @@ try{
   requestAnimationFrame(fadeLetters);
   // ===== iOS KEYBOARD CAPTURE =====
   var cap=document.getElementById('cap'),prevVal='';
-  cap.addEventListener('input',function(){var v=cap.value;var i=0;while(i<prevVal.length&&i<v.length&&prevVal.charAt(i)===v.charAt(i))i++;var added=v.slice(i);for(var k=0;k<added.length;k++)handleChar(added.charAt(k));prevVal=v;buffer=v;});
+  cap.addEventListener('input',function(){
+    var v=cap.value;var i=0;while(i<prevVal.length&&i<v.length&&prevVal.charAt(i)===v.charAt(i))i++;var added=v.slice(i);
+    var now=Date.now();
+    for(var k=0;k<added.length;k++){
+      var ch=added.charAt(k);
+      // auto-space on pause: if a real letter arrives after a gap, insert a space first
+      if(/[^\s]/.test(ch) && buffer.length>0 && !/\s$/.test(cap.value.slice(0,i)+added.slice(0,k)) && (now-lastKey)>PAUSE_MS){
+        var pos=cap.selectionStart; cap.value=cap.value.slice(0,i+k)+' '+cap.value.slice(i+k); try{cap.setSelectionRange(pos+1,pos+1);}catch(e){}
+        handleChar(' ');
+      }
+      handleChar(ch); lastKey=now;
+    }
+    prevVal=cap.value;buffer=cap.value;
+  });
 
   // ===== KEYBOARD (custom, disabled — using iOS keyboard) =====
   var kb=document.getElementById('keyboard');
