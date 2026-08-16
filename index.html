@@ -12,10 +12,11 @@
 <style>
   :root{--ink:rgba(255,255,255,0.92);--dim:rgba(255,255,255,0.45);--line:rgba(255,255,255,0.14);--track:rgba(4,8,20,0.6);--blue:143,180,255;}
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  *:focus{outline:none;}
   html,body{height:100%;background:#000107;overflow:hidden;overscroll-behavior:none;}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
   #sky{position:fixed;inset:0;z-index:0;}
-  #cap{position:fixed;inset:0;z-index:5;width:100%;height:100%;background:transparent;border:none;outline:none;resize:none;color:transparent;caret-color:transparent;font-size:16px;padding:30vh 20px;}
+  #cap{position:fixed;inset:0;z-index:5;width:100%;height:100%;background:transparent;border:none;outline:none;resize:none;color:transparent;caret-color:transparent;font-size:16px;padding:30vh 20px;-webkit-tap-highlight-color:transparent;}
   .snd{font-size:10px !important;padding:9px 11px !important;letter-spacing:.08em !important;}
   @media (orientation:landscape){#prompt,.line{top:26%;} #cap{padding:18vh 20px;}}
   #stage{position:fixed;inset:0;z-index:6;pointer-events:none;}
@@ -55,7 +56,7 @@
   #hideall{align-self:center;margin-top:2px;border:1px solid var(--line);background:rgba(255,255,255,0.03);color:var(--dim);font:inherit;font-weight:300;letter-spacing:.14em;text-transform:uppercase;font-size:11px;padding:10px 18px;border-radius:100px;cursor:pointer;}
   #toast{position:fixed;left:50%;top:calc(56px + env(safe-area-inset-top));transform:translateX(-50%);z-index:26;background:rgba(10,14,26,0.92);border:1px solid var(--line);color:#cfe0ff;font-size:12px;padding:10px 16px;border-radius:100px;opacity:0;transition:opacity .4s ease;pointer-events:none;max-width:80vw;text-align:center;}
   #toast.show{opacity:1;}
-  #toptap{position:fixed;top:0;left:0;right:0;height:14%;z-index:13;}
+  #toptap{position:fixed;top:0;left:0;right:0;height:14%;z-index:13;outline:none;border:none;-webkit-tap-highlight-color:transparent;}
   #statusline{font:300 10px/1.4 ui-monospace,Menlo,monospace;color:rgba(var(--blue),0.6);text-align:center;letter-spacing:.04em;}
   .done2{color:#cfe0ff !important;border-color:rgba(var(--blue),0.6) !important;background:rgba(var(--blue),0.12) !important;}
   #result{position:fixed;inset:0;z-index:20;background:rgba(2,4,10,0.95);display:none;flex-direction:column;padding:calc(40px + env(safe-area-inset-top)) 28px calc(30px + env(safe-area-inset-bottom));gap:16px;}
@@ -258,7 +259,7 @@ try{
     var out=res.join(' ');out=out.charAt(0).toUpperCase()+out.slice(1);if(/[a-z]$/i.test(out))out+='.';return out;}
   // ===== END CORRECTOR =====
   // ===== AI INTERPRETER (cloud) with offline fallback =====
-  var AI_ENDPOINT='https://ambient-ai.ashingtray.workers.dev';
+  var AI_ENDPOINT='';  // <-- paste your Cloudflare Worker URL here to enable cloud AI
   var CLEAN_PROMPT="You are reading a private stream-of-consciousness reflection typed on a difficult on-screen keyboard, so words may be misspelled, garbled, fragmented, or run together, and there is no punctuation. Using the context of the whole passage, reconstruct what the writer most likely meant: fix spelling, fix spacing, repair garbled words, and add sentence-ending punctuation and capitalization. Preserve the writer's own voice, tone and meaning. Do not add new ideas or change their intent. Return only the corrected text, nothing else.\n\n";
   async function aiClean(text){
     var url=AI_ENDPOINT||'https://api.anthropic.com/v1/messages';
