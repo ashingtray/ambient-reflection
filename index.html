@@ -259,7 +259,7 @@ try{
     var out=res.join(' ');out=out.charAt(0).toUpperCase()+out.slice(1);if(/[a-z]$/i.test(out))out+='.';return out;}
   // ===== END CORRECTOR =====
   // ===== AI INTERPRETER (cloud) with offline fallback =====
-  var AI_ENDPOINT='';  // <-- paste your Cloudflare Worker URL here to enable cloud AI
+  var AI_ENDPOINT='https://ambient-ai.ashingtray.workers.dev';  // <-- paste your Cloudflare Worker URL here to enable cloud AI
   var CLEAN_PROMPT="You are reading a private stream-of-consciousness reflection typed on a difficult on-screen keyboard, so words may be misspelled, garbled, fragmented, or run together, and there is no punctuation. Using the context of the whole passage, reconstruct what the writer most likely meant: fix spelling, fix spacing, repair garbled words, and add sentence-ending punctuation and capitalization. Preserve the writer's own voice, tone and meaning. Do not add new ideas or change their intent. Return only the corrected text, nothing else.\n\n";
   async function aiClean(text){
     var url=AI_ENDPOINT||'https://api.anthropic.com/v1/messages';
